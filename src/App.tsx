@@ -1,25 +1,69 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { DEFAULT_COMPONENT_ICONS } from "@azure/communication-react";
+import { Stack, TextField, registerIcons } from "@fluentui/react";
+import { useState } from "react";
+import "./App.css";
+import { ContosoCallContainer } from "./CallApp";
+
+registerIcons({ icons: { ...DEFAULT_COMPONENT_ICONS }});
 
 function App() {
+  const [displayName, setDisplayName] = useState<string | undefined>();
+  const [userId, setUserId] = useState<string | undefined>();
+  const [token, setToken] = useState<string | undefined>();
+  const [locator, setLocator] = useState<string | undefined>();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Stack>
+      <Stack>
+        <TextField
+          label="Display Name"
+          onChange={(
+            event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
+            newValue?: string
+          ) => {
+            setDisplayName(newValue);
+          }}
+        />
+        <TextField
+          label="User ID"
+          onChange={(
+            event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
+            newValue?: string
+          ) => {
+            setUserId(newValue);
+          }}
+        />
+        <TextField
+          label="Token"
+          type="Password"
+          canRevealPassword
+          onChange={(
+            event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
+            newValue?: string
+          ) => {
+            setToken(newValue);
+          }}
+        />
+        <TextField
+          label="Locator"
+          onChange={(
+            event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
+            newValue?: string
+          ) => {
+            setLocator(newValue);
+          }}
+        />
+      </Stack>
+      {displayName && userId && token && locator ? (
+        <ContosoCallContainer
+          displayName={displayName}
+          userId={{
+            communicationUserId: userId
+          }}
+          token={token}
+          locator={locator}
+        />
+      ) : "Fill in all fields"}
+    </Stack>
   );
 }
 
