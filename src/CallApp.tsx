@@ -71,6 +71,9 @@ export const ContosoCallContainer = (props: ContainerProps): JSX.Element => {
   }, [adapter]);
 
   if (adapter) {
+    adapter.on('callIdChanged', () => {
+      console.log('CALL ID: ', adapter.getState().call?.id);
+    });
     return (
       <div style={{ height: '90vh', width: '90vw' }}>
         <CallComposite
